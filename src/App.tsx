@@ -8,16 +8,16 @@ import {Menu} from "@material-ui/icons";
 
 export type FilterValuesType = 'all' | 'completed' | 'active'
 
-type TodolistType = {
+export type TodolistType = {
     id: string
     title: string
     filter: FilterValuesType
 }
-type TasksStateType = {
+export type TasksStateType = {
     [key: string]: Array<TasksType>
 }
 
-function App() {
+export function App() {
     function removeTask(id: string, todolistId: string) {
         let tasks = tasksObg[todolistId]
         let filteredTasks = tasks.filter(task => task.id !== id)
@@ -51,7 +51,7 @@ function App() {
         }
     }
 
-    function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
+  function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
         let tasks = tasksObg[todolistId]
         let task = tasks.find(task => task.id === taskId)
         if (task) {
@@ -60,7 +60,7 @@ function App() {
         }
     }
 
-    function changeFilter(value: FilterValuesType, todolistId: string) {
+  function changeFilter(value: FilterValuesType, todolistId: string) {
         let todolist = todolists.find(todolist => todolist.id === todolistId)
         if (todolist) {
             todolist.filter = value;
