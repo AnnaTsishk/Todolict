@@ -39,7 +39,6 @@ export function App() {
         let newTasks = [newTask, ...tasks]
         tasksObg[todolistId] = newTasks
         setTasks({...tasksObg})
-
     }
 
     function changeStatus(taskId: string, isDone: boolean, todolistId: string) {
