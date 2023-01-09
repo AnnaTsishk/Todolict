@@ -1,6 +1,6 @@
 import {TasksStateType} from "../App";
 import {v1} from "uuid";
-import {AddTodolistActionType} from "./todolists-reducer";
+import {AddTodolistActionType, RemoveTodolistActionType} from "./todolists-reducer";
 
 
 export type RemoveTaskActionType ={
@@ -29,7 +29,7 @@ export type ChangeTaskTitleActionType={
 
 type ActionsType = RemoveTaskActionType|AddTaskActionType|
     ChangeTaskStatusActionType|ChangeTaskTitleActionType|
-    AddTodolistActionType
+    AddTodolistActionType|RemoveTodolistActionType
 
 export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksStateType => {
     switch (action.type){
@@ -38,7 +38,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksS
             const tasks=state[action.todolistId]
             const filteredTasks= tasks.filter(task => task.id !==action.taskId)
             stateCopy[action.todolistId]=filteredTasks
-             return stateCopy;
+            return stateCopy;
         }
         case "ADD-TASK":{
             const stateCopy={...state}
@@ -68,11 +68,15 @@ export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksS
         }
         case "ADD-TODOLIST":{
             const stateCopy={...state}
-            stateCopy[v1()]=[];
+            stateCopy[action.todolistId]=[];
             return stateCopy
         }
-
-            default:
+        case "REMOVE-TODOLIST": {
+            const stateCopy = {...state}
+            delete stateCopy[action.id]
+            return stateCopy;
+        }
+        default:
 
             throw new Error("I don't understand this action type")
     }
@@ -82,7 +86,7 @@ export const removeTaskAC= (taskId: string, todolistId: string): RemoveTaskActio
     return {type:'REMOVE-TASK', todolistId: todolistId, taskId: taskId}
 }
 export const addTaskAC= (title: string, todolistId: string): AddTaskActionType =>{
-    return {type:'ADD-TASK', title:title, todolistId: todolistId}
+    return {type:'ADD-TASK', title, todolistId}
 }
 export const changeTaskStatusAC= (taskId: string, isDone:boolean, todolistId: string): ChangeTaskStatusActionType =>{
     return {type:'CHANGE-TASK-STATUS', taskId: taskId, todolistId: todolistId, isDone:isDone}
