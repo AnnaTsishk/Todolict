@@ -9,7 +9,16 @@ type AddItemFormPropsType = {
 
 export function AddItemForm(props: AddItemFormPropsType) {
     const [newTaskTitle, setNewTaskTitle] = useState('')
-    const [error, setError] = useState<string | null>('' && null)
+    const [error, setError] = useState<string | null>( null)
+
+    const addItem =()=>{
+        if (newTaskTitle.trim() !=="") {
+            props.addItem(newTaskTitle);
+            setNewTaskTitle("")
+        }else{
+            setError("Title is required")
+        }
+    }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewTaskTitle(e.currentTarget.value)
@@ -17,8 +26,7 @@ export function AddItemForm(props: AddItemFormPropsType) {
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(null)
         if (e.key === 'Enter') {
-            props.addItem(newTaskTitle);
-            setNewTaskTitle('')
+            addItem()
         }
     }
     const onClickHandler = () => {
