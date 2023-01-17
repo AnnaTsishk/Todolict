@@ -13,7 +13,6 @@ export type AddTaskActionType={
     type: "ADD-TASK"
     title: string
     todolistId: string
-
 }
 export type ChangeTaskStatusActionType={
     type:'CHANGE-TASK-STATUS'
@@ -59,19 +58,14 @@ export const tasksReducer = (state: TasksStateType= initialState, action: Action
             stateCopy[action.todolistId]=tasks.map(task=> task.id === action.taskId
                 ? {...task, isDone:action.isDone}
                 : task)
-            const task = tasks.find(task=>task.id===action.taskId)
-            if (task) {
-                task.isDone = action.isDone
-            }
             return stateCopy
         }
-        case 'CHANGE-TASK-TITLE':{
-            const stateCopy={...state}
-            const tasks=stateCopy[action.todolistId]
-            const task = tasks.find(task=>task.id===action.taskId)
-            if (task) {
-                task.title = action.newTitle
-            }
+        case 'CHANGE-TASK-TITLE': {
+            const stateCopy = {...state}
+            const task = stateCopy[action.todolistId]
+            stateCopy[action.todolistId] = task.map(task => task.id === action.taskId
+                ? {...task, title: action.newTitle}
+                : task)
             return stateCopy
         }
         case "ADD-TODOLIST":{
@@ -99,7 +93,7 @@ export const addTaskAC= (title: string, todolistId: string): AddTaskActionType =
 export const changeTaskStatusAC= (taskId: string, isDone:boolean, todolistId: string): ChangeTaskStatusActionType =>{
     return {type:'CHANGE-TASK-STATUS', taskId: taskId, todolistId: todolistId, isDone:isDone}
 }
-export const changeTaskTitleAC= (taskId: string, todolistId: string, newTitle: string): ChangeTaskTitleActionType =>{
-    return {type:'CHANGE-TASK-TITLE', taskId: taskId, todolistId: todolistId,newTitle: newTitle}
+export const changeTaskTitleAC= (taskId: string, newTitle: string, todolistId: string) : ChangeTaskTitleActionType =>{
+    return {type:'CHANGE-TASK-TITLE', taskId: taskId, newTitle: newTitle, todolistId: todolistId}
 }
 

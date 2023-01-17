@@ -141,12 +141,12 @@ export function App() {
                                         key={todolist.id}
                                         id={todolist.id}
                                         title={todolist.title}
-                                        // tasks={tasksForTodolist}
-                                        // removeTask={removeTask}
+                                        tasks={tasksForTodolist}
+                                        removeTask={removeTask}
                                         changeFilter={changeFilter}
-                                        // addTasks={addTask}
-                                        // changeTaskStatus={changeStatus}
-                                        // changeTaskTitle={changeTaskTitle}
+                                        addTask={addTask}
+                                        changeTaskStatus={changeStatus}
+                                        changeTaskTitle={changeTaskTitle}
                                         filter={todolist.filter}
                                         removeTodolist={removeTodolist}
                                         changeTodolistTitle={changeTodolistTitle}

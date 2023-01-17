@@ -44,7 +44,7 @@ export function AppWithReducers(): any {
     function addTask(title: string, todolistId: string) {
         dispatchToTasksReducer(addTaskAC(title, todolistId));
     }
-    function changeStatus(taskId: string, isDone: boolean, todolistId: string) {
+    function changeTaskStatus(taskId: string, isDone: boolean, todolistId: string) {
         const action = changeTaskStatusAC(taskId, isDone, todolistId)
         dispatchToTasksReducer(action);
     }
@@ -121,12 +121,12 @@ export function AppWithReducers(): any {
                                         key={todolist.id}
                                         id={todolist.id}
                                         title={todolist.title}
-                                        // tasks={tasksForTodolist}
-                                        // removeTask={removeTask}
+                                        tasks={tasksForTodolist}
+                                        removeTask={removeTask}
                                         changeFilter={changeFilter}
-                                        // addTasks={addTask}
-                                        // changeTaskStatus={changeStatus}
-                                        // changeTaskTitle={changeTaskTitle}
+                                        addTask={addTask}
+                                        changeTaskStatus={changeTaskStatus}
+                                        changeTaskTitle={changeTaskTitle}
                                         filter={todolist.filter}
                                         removeTodolist={removeTodolist}
                                         changeTodolistTitle={changeTodolistTitle}
