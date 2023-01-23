@@ -1,6 +1,6 @@
 import React, {useReducer} from 'react';
 import './App.css';
-import {TaskType, Todolist} from "./Todolist";
+import {Todolist} from "./Todolist";
 import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
@@ -8,7 +8,7 @@ import {Menu} from "@material-ui/icons";
 import {
     addTodolistAC,
     changeTodolistFilterAC,
-    changeTodolistTitletAC,
+    changeTodolistTitletAC, FilterValuesType,
     removeTodolistAC,
     todolistsReducer
 } from "./state/todolists-reducer";
@@ -17,16 +17,10 @@ import {
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeTaskAC,
-    tasksReducer
+    tasksReducer,
+    // todolistId
 } from "./state/tasks-reducer";
-
-export type FilterValuesType = 'all' | 'completed' | 'active'
-
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
+import {TaskPriorities, TaskStatuses, TaskType} from "./api/todolists-api";
 export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
@@ -44,8 +38,8 @@ export function AppWithReducers(): any {
     function addTask(title: string, todolistId: string) {
         dispatchToTasksReducer(addTaskAC(title, todolistId));
     }
-    function changeTaskStatus(taskId: string, isDone: boolean, todolistId: string) {
-        const action = changeTaskStatusAC(taskId, isDone, todolistId)
+    function changeTaskStatus(taskId: string, status: TaskStatuses.New, todolistId: string) {
+        const action = changeTaskStatusAC(taskId, status, todolistId)
         dispatchToTasksReducer(action);
     }
     function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
@@ -70,20 +64,41 @@ export function AppWithReducers(): any {
     let todolistId2 = v1();
 
     let [todolists, dispatchToTodolistsReduser] = useReducer(todolistsReducer, [
-        {id: todolistId1, title: "What to learn", filter: 'all'},
-        {id: todolistId2, title: "What to buy", filter: 'active'}
+        {id: todolistId1, title: "What to learn", filter: 'all', addedDate: '',
+            order:0},
+        {id: todolistId2, title: "What to buy", filter: 'active', addedDate: '',
+            order:0}
     ])
     let [tasks, dispatchToTasksReducer] = useReducer(tasksReducer, {
         [todolistId1]: [
-            {id: v1(), title: "CSS", isDone: true},
-            {id: v1(), title: "HTML", isDone: true},
-            {id: v1(), title: "JS", isDone: false},
-            {id: v1(), title: "React", isDone: false},
-            {id: v1(), title: "Redux", isDone: false}
+            {id: v1(), title: "CSS", status:TaskStatuses.Completed,
+                todoListId: 'todolistId1', startDate:'', deadline:'', addedDate:'',
+                order: 0, priority: TaskPriorities.Low, description:'', completed: false},
+            {id: v1(), title: "HTML", status:TaskStatuses.Completed,
+                todoListId: 'todolistId1', startDate:'', deadline:'', addedDate:'',
+                order: 0, priority: TaskPriorities.Low, description:'', completed: false
+            },
+            {id: v1(), title: "JS", status:TaskStatuses.New,
+                todoListId: 'todolistId1', startDate:'', deadline:'', addedDate:'',
+                order: 0, priority: TaskPriorities.Low, description:'', completed: false},
+            {id: v1(), title: "React", status:TaskStatuses.New,
+                todoListId: 'todolistId1', startDate:'', deadline:'', addedDate:'',
+                order: 0, priority: TaskPriorities.Low, description:'', completed: false
+            },
+            {id: v1(), title: "Redux", status:TaskStatuses.New,
+                todoListId: 'todolistId1', startDate:'', deadline:'', addedDate:'',
+                order: 0, priority: TaskPriorities.Low, description:'', completed: false
+            }
         ],
         [todolistId2]: [
-            {id: v1(), title: "Book", isDone: false},
-            {id: v1(), title: "Milk", isDone: true}
+            {id: v1(), title: "Book", status:TaskStatuses.New,
+                todoListId: 'todolistId2', startDate:'', deadline:'', addedDate:'',
+                order: 0, priority: TaskPriorities.Low, description:'', completed: false
+            },
+            {id: v1(), title: "Milk", status:TaskStatuses.Completed,
+                todoListId: 'todolistId2', startDate:'', deadline:'', addedDate:'',
+                order: 0, priority: TaskPriorities.Low, description:'', completed: false
+            }
         ],
     });
 
@@ -110,10 +125,10 @@ export function AppWithReducers(): any {
                             let tasksForTodolist = tasks[todolist.id];
 
                             if (todolist.filter === "completed") {
-                                tasksForTodolist = tasksForTodolist.filter(task => task.isDone === true);
+                                tasksForTodolist = tasksForTodolist.filter(task => task.status === TaskStatuses.New);
                             }
                             if (todolist.filter === "active") {
-                                tasksForTodolist = tasksForTodolist.filter(task => task.isDone === false);
+                                tasksForTodolist = tasksForTodolist.filter(task => task.status === TaskStatuses.Completed);
                             }
                             return <Grid item>
                                 <Paper style={{padding: '20px'}}>

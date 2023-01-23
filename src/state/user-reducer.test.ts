@@ -1,4 +1,3 @@
-import React from "react";
 import {todolistsReducer} from "./user-reducer";
 
 test('user reducer should increment only age', ()=>{
