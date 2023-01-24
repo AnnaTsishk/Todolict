@@ -68,7 +68,7 @@ export type UpdateTaskType = {
 
 
 export const todolistsAPI = {
-    getTodolist() {
+    getTodolists() {
         const promise = instance.get<Array<TodolistType>>("todo-lists")
         return promise;
     },

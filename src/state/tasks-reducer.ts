@@ -28,7 +28,11 @@ export type ChangeTaskTitleActionType={
     newTitle: string
     todolistId: string
 }
-
+export type SetTasksActionType ={
+    type:'SET-TASKS'
+    tasks: Array<TaskType>
+    todolistId: string
+}
 export type ActionsType = RemoveTaskActionType
     | AddTaskActionType
     | ChangeTaskStatusActionType
@@ -36,6 +40,7 @@ export type ActionsType = RemoveTaskActionType
     | AddTodolistActionType
     | RemoveTodolistActionType
     | SetTodolistsActionType
+    | SetTasksActionType
 
 const initialState:TasksStateType ={}
 
@@ -95,6 +100,12 @@ export const tasksReducer = (state: TasksStateType= initialState, action: Action
             })
             return stateCopy
         }
+        case "SET-TASKS":{
+            const stateCopy = {...state}
+             stateCopy[action.todolistId]=action.tasks
+           return stateCopy
+
+        }
         default:
             return state;
             // throw new Error("I don't understand this action type")
@@ -113,5 +124,7 @@ export const changeTaskStatusAC= (taskId: string, status: TaskStatuses, todolist
 export const changeTaskTitleAC= (taskId: string, newTitle: string, todolistId: string) : ChangeTaskTitleActionType =>{
     return {type:'CHANGE-TASK-TITLE', taskId: taskId, newTitle: newTitle, todolistId: todolistId}
 }
-
+export const setTasksAC= (tasks: Array<TaskType>, todolistId: string) : SetTasksActionType =>{
+    return {type:'SET-TASKS', tasks, todolistId}
+}
 

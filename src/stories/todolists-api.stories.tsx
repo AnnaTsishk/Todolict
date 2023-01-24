@@ -17,7 +17,7 @@ export default {
 export const GetTodolist = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        todolistsAPI.getTodolist()
+        todolistsAPI.getTodolists()
             .then((res) => {
                 setState(res.data)
             })
