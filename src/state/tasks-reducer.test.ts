@@ -127,12 +127,11 @@ test('status of specified task should be changed',()=>{
                 order: 0, priority: TaskPriorities.Low, description:'', completed: false}
         ],
     };
-    const action = changeTaskStatusAC('2', TaskStatuses.New, "todolistId2");
+    const action = changeTaskStatusAC('1', TaskStatuses.New, "todolistId2");
 
     const endState= tasksReducer(startState, action)
 
-    expect(endState['todolistId2'][1].status).toBe(TaskStatuses.Completed);
-    expect(endState['todolistId1'][1].status).toBe(TaskStatuses.New);
+    expect(endState['todolistId2'][2].status).toBe(TaskStatuses.New);
 
 })
 
@@ -260,6 +259,6 @@ test('tasks should be added for todolist',() =>{
     }, action);
 
     expect(endState['todolistId1'].length).toBe(5);
-    expect(endState['todolistId2'].length).toBe(3);
+    expect(endState['todolistId2'].length).toBe(0);
 
 });

@@ -103,7 +103,7 @@ export function App() {
         }
     }
 
-  function changeFilter(value: FilterValuesType, todolistId: string) {
+    function changeFilter(value: FilterValuesType, todolistId: string) {
         let todolist = todolists.find(todolist => todolist.id === todolistId)
         if (todolist) {
             todolist.filter = value;
@@ -112,14 +112,13 @@ export function App() {
     }
 
 
-
     function addTodolist(title: string) {
         let todolist: TodolistDomainType = {
             id: v1(),
             filter: "all",
             title: title,
             addedDate: '',
-            order:0
+            order: 0
         }
         setTodolists([todolist, ...todolists])
         setTasks({
