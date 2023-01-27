@@ -1,6 +1,6 @@
 import {
     addTaskAC,
-    changeTaskStatusAC,
+    updateTaskAC,
     changeTaskTitleAC,
     removeTaskAC,
     setTasksAC,
@@ -8,7 +8,7 @@ import {
 } from "./tasks-reducer";
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from "./todolists-reducer";
 import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
-import {TasksStateType} from "../App";
+import {TasksStateType} from "../stories/tresh/App";
 
 let startState:TasksStateType={}
     beforeEach(()=>{
@@ -94,7 +94,20 @@ test('correct task should be added from correct array',() =>{
         ],
     };
 
-    const action = addTaskAC('juce', 'todolistId2');
+    // const action = addTaskAC('juce', 'todolistId2');
+    const action = addTaskAC({
+        todoListId:'todolistId2',
+        title: 'juce',
+        status: TaskStatuses.New,
+        order: 0,
+        addedDate:"",
+        id:"",
+        completed: false,
+        deadline:"",
+        description:'',
+        priority: TaskPriorities.Low,
+        startDate:''
+    });
     const endState = tasksReducer(startState, action)
 
     expect(endState['todolistId1'].length).toBe(5);
@@ -127,7 +140,7 @@ test('status of specified task should be changed',()=>{
                 order: 0, priority: TaskPriorities.Low, description:'', completed: false}
         ],
     };
-    const action = changeTaskStatusAC('1', TaskStatuses.New, "todolistId2");
+    const action = updateTaskAC('1', {status: TaskStatuses.New}, "todolistId2");
 
     const endState= tasksReducer(startState, action)
 
@@ -158,7 +171,7 @@ test('title of specified task should be changed',()=>{
                 order: 0, priority: TaskPriorities.Low, description:'', completed: false}
         ],
     };
-    const action = changeTaskTitleAC('2', "MilkyWay", "todolistId2");
+    const action = updateTaskAC('2', {title:"MilkyWay"}, "todolistId2");
 
     const endState= tasksReducer(startState, action)
 
@@ -190,7 +203,13 @@ test('new property with new array should be added when new todolist is added',()
                 order: 0, priority: TaskPriorities.Low, description:'', completed: false}
         ],
     };
-    const action = addTodolistAC ('new todolist');
+    const action = addTodolistAC ({
+      addedDate: '',
+      order: 0,
+      title:'new todolist',
+      id:""
+      }
+   );
     const endState= tasksReducer(startState, action)
 
     const keys = Object.keys(endState)

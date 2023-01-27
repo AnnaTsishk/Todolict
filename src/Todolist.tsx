@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from "react";
-import {AddItemForm} from "./AddItemForm";
-import {EditableSpan} from "./EditableSpan";
+import {AddItemForm} from "./components/AddItemForm/AddItemForm";
+import {EditableSpan} from "./components/EditabelSpan/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useSelector} from "react-redux";
@@ -17,13 +17,13 @@ export type TodolistType = {
     id: string
     title: string
     tasks: Array<TaskType>
-    changeFilter: (value: FilterValuesType, todolistId: string) => void
+    changeFilter: (id:string, filter: FilterValuesType) => void
     filter: FilterValuesType
     removeTodolist: (todolistId: string) => void
     changeTodolistTitle: (newTitle: string, id: string)=>void
-    addTask: (newTaskTitle: string, id: string) => void
-    removeTask: (id: string, todolistId: string)=> void
-    changeTaskStatus:(taskId: string, status:TaskStatuses.New, todolistId: string)=>void
+    addTask: (newTaskTitle: string, todolistId: string) => void
+    removeTask: (todolistId: string,taskId: string)=> void
+    changeTaskStatus:(taskId: string, status:TaskStatuses, todolistId: string)=>void
     changeTaskTitle:(taskId: string, newTitle:string, todolistId: string)=>void
 }
 export const Todolist = React.memo(function (props: TodolistType) {
@@ -44,14 +44,15 @@ const  dispatch = useAppDispatch();
     }, [props.changeTodolistTitle, props.id])
 
     const tasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[props.id])
+
     const onAllClickHandler = useCallback(() => {
-        props.changeFilter('all', props.id)
+        props.changeFilter('all', props.filter)
     }, [props.changeFilter, props.id])
     const onActiveClickHandler = useCallback(() => {
-        props.changeFilter('active', props.id)
+        props.changeFilter('active', props.filter)
     }, [props.changeFilter, props.id])
     const onCompletedClickHandler = useCallback(() => {
-        props.changeFilter('completed', props.id)
+        props.changeFilter('completed', props.filter)
     }, [props.changeFilter, props.id])
 
 
